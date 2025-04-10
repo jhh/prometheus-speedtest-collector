@@ -22,6 +22,14 @@ in
           OnUnitActiveSec specification for collection.
         '';
       };
+
+      collectionDir = lib.mkOption {
+        type = lib.types.str;
+        default = "/var/local/prometheus/node-exporter";
+        description = ''
+          Directory that prometheus-node-exporter collects textfiles from.
+        '';
+      };
     };
   };
 
@@ -39,7 +47,7 @@ in
     systemd.services.prometheus-speedtest-collector = {
       description = "Prometheus speedtest collector";
       environment = {
-        PROMETHEUS_TEXTFILE_DIR = "/var/local/prometheus/node-exporter";
+        PROMETHEUS_TEXTFILE_DIR = cfg.collectionDir;
       };
 
       serviceConfig = {
