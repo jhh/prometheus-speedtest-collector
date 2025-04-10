@@ -23,8 +23,7 @@ in
       '';
       Restart = "on-failure";
 
-      User = "prometheus-speedtest-collector";
-      DynamicUser = true;
+      User = "node-exporter";
 
       BindReadOnlyPaths = [
         "${
