@@ -6,13 +6,13 @@
   ...
 }:
 let
-  cfg = config.j3ff.watchtower.prometheus-speedtest-collector;
+  cfg = config.j3ff.watchtower.exporters.speedtest;
   inherit (pkgs) system;
 in
 {
 
   options = {
-    j3ff.watchtower.prometheus-speedtest-collector = {
+    j3ff.watchtower.exporters.speedtest = {
       enable = lib.mkEnableOption "Prometheus speedtest collection";
 
       interval = lib.mkOption {
