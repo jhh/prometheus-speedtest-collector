@@ -7,12 +7,13 @@ in
 mkDerivation {
   name = "prometheus-speedtest-collector";
   src = ../..;
-  propagatedBuildInputs = [ python ];
   installPhase = ''
     runHook preInstall
     mkdir -p $out/bin
     cp main.py  $out/bin/prometheus-speedtest-collector
-    speedtest_go=${lib.getExe pkgs.speedtest-go} substituteAllInPlace $out/bin/prometheus-speedtest-collector
+    chmod +x $out/bin/prometheus-speedtest-collector
+    speedtest_go=${lib.getExe pkgs.speedtest-go} python=${lib.getExe python} \
+        substituteAllInPlace $out/bin/prometheus-speedtest-collector
     runHook postInstall
   '';
 }
