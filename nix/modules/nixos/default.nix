@@ -16,7 +16,7 @@ in
       PROMETHEUS_TEXTFILE_DIR = "/var/local/prometheus/node-exporter";
     };
 
-    startAt = "*:23/8";
+    startAt = "*-*-* 06,18:23:00";
     serviceConfig = {
       ExecStart = ''
         ${flake.packages.${system}.default}/bin/prometheus-speedtest-collector
