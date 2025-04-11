@@ -70,6 +70,20 @@ in
           "-/etc/localtime"
         ];
 
+        NoNewPrivileges = true;
+        PrivateTmp = true;
+        PrivateDevices = true;
+        DevicePolicy = "closed";
+        ProtectSystem = "strict";
+        ProtectHome = "read-only";
+        ProtectControlGroups = true;
+        ProtectKernelModules = true;
+        ProtectKernelTunables = true;
+        RestrictNamespaces = true;
+        RestrictRealtime = true;
+        RestrictSUIDSGID = true;
+        MemoryDenyWriteExecute = true;
+        LockPersonality = true;
         RestrictAddressFamilies = "AF_UNIX AF_INET";
         CapabilityBoundingSet = "";
         SystemCallFilter = [
