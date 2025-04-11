@@ -16,6 +16,7 @@ The following metrics will be available for Prometheus to scrape:
 ### Labels
 
 All metrics are labeled with:
+
 - `id`: Unique identifier of the server assigned by [speedtest.net](https://www.speedtest.net).
 - `name`: Name of the server.
 - `sponsor`: The sponsor of the server.

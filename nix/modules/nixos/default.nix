@@ -46,6 +46,9 @@ in
 
     systemd.services.prometheus-speedtest-collector = {
       description = "Prometheus speedtest collector";
+      after = [ "network-online.target" ];
+      wants = [ "network-online.target" ];
+
       environment = {
         PROMETHEUS_TEXTFILE_DIR = cfg.collectionDir;
       };
@@ -58,42 +61,50 @@ in
         '';
 
         User = "node-exporter";
+        Group = "node-exporter";
 
-        BindReadOnlyPaths = [
-          "${
-            config.environment.etc."ssl/certs/ca-certificates.crt".source
-          }:/etc/ssl/certs/ca-certificates.crt"
-          builtins.storeDir
-          "-/etc/resolv.conf"
-          "-/etc/nsswitch.conf"
-          "-/etc/hosts"
-          "-/etc/localtime"
-        ];
-
-        BindPaths = [
-          cfg.collectionDir
-        ];
-
-        NoNewPrivileges = true;
+        # Basic security hardening
         PrivateTmp = true;
-        PrivateDevices = true;
-        DevicePolicy = "closed";
         ProtectSystem = "strict";
-        ProtectHome = "read-only";
-        ProtectControlGroups = true;
-        ProtectKernelModules = true;
+        ProtectHome = true;
+        ReadWritePaths = cfg.collectionDir;
+        NoNewPrivileges = true;
+
+        # Process isolation
         ProtectKernelTunables = true;
+        ProtectKernelModules = true;
+        ProtectControlGroups = true;
+        PrivateDevices = true;
+        RestrictAddressFamilies = "AF_INET AF_INET6";
         RestrictNamespaces = true;
-        RestrictRealtime = true;
+
+        # System call filtering
+        SystemCallFilter = "@system-service";
+        SystemCallErrorNumber = "EPERM";
+        SystemCallArchitectures = "native";
+
+        # Resource limits
+        LimitNOFILE = 1024;
+        MemoryMax = "256M";
+        CPUQuota = "20%";
+
+        # Network access controls
+        IPAddressAllow = "any";
         RestrictSUIDSGID = true;
-        MemoryDenyWriteExecute = true;
+        ProtectClock = true;
+        ProtectHostname = true;
+        ProtectKernelLogs = true;
+        ProtectProc = "invisible";
+        ProcSubset = "pid";
         LockPersonality = true;
-        RestrictAddressFamilies = "AF_UNIX AF_INET";
-        CapabilityBoundingSet = "";
-        SystemCallFilter = [
-          "@system-service"
-          "~@privileged @setuid @keyring"
-        ];
+        MemoryDenyWriteExecute = true;
+        RestrictRealtime = true;
+        CapabilityBoundingSet = "CAP_NET_BIND_SERVICE CAP_NET_RAW";
+
+        # Filesystem restrictions
+        ReadOnlyPaths = "/";
+        TemporaryFileSystem = "/var:ro /run:ro";
+        InaccessiblePaths = "/boot /mnt /media";
       };
     };
   };
