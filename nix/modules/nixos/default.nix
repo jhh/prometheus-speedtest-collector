@@ -84,9 +84,8 @@ in
         SystemCallArchitectures = "native";
 
         # Resource limits
-        LimitNOFILE = 1024;
-        MemoryMax = "256M";
-        CPUQuota = "20%";
+        MemoryMax = "64M";
+        LimitCPU = "5s";
 
         # Network access controls
         IPAddressAllow = "any";
