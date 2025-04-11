@@ -70,6 +70,10 @@ in
           "-/etc/localtime"
         ];
 
+        BindPaths = [
+          cfg.collectionDir
+        ];
+
         NoNewPrivileges = true;
         PrivateTmp = true;
         PrivateDevices = true;
