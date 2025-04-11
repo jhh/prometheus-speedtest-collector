@@ -6,6 +6,7 @@ let
 in
 mkDerivation {
   name = "prometheus-speedtest-collector";
+  version = "1.0.0";
   src = ../..;
   installPhase = ''
     runHook preInstall
