@@ -103,7 +103,6 @@ in
 
         # Filesystem restrictions
         ReadOnlyPaths = "/";
-        TemporaryFileSystem = "/var:ro /run:ro";
         InaccessiblePaths = "/boot";
       };
     };
